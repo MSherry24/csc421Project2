@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import main.TextInputParser.Node;
+import main.TextInputParser.ReturnProperties;
 
 
 public class Main {
@@ -16,13 +17,17 @@ public class Main {
 
 		try {
 			String fileName = args[0]; 
-			adjacencyList = text.readList(fileName);
-			Integer size = text.getSize(fileName);
-			Integer d[];
-			String parent[];
-			System.out.println(size);
+			ReturnProperties rp = text.readList(fileName);
+			Integer size = rp.size;
+			HashMap d = rp.distance;
+			HashMap parent = rp.parents;
+			Heap heap = new Heap(size);
+			adjacencyList = rp.adjacencyList;
 			
+	
 			
+
+						
 		}
 		catch (Exception e) {
 			System.out.println("Parse Error");

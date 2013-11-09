@@ -18,30 +18,24 @@ public class TextInputParser {
 		}
 	}
 
-
-	public HashMap<String, ArrayList<Node>> readList(String filename) throws IOException {
-		HashMap<String, ArrayList<Node>> points = readFromFile(filename);
-		return points;
+	
+	public class ReturnProperties {
+		public HashMap<String, ArrayList<Node>> adjacencyList;
+		public Integer size;
+		public HashMap<String, String> parents;
+		public HashMap<String, Integer> distance;
 	}
 
-	public Integer getSize(String filename) throws FileNotFoundException, IOException {
-		FileReader fileReader = new FileReader(filename);
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		String line = null;
-		while ((line = bufferedReader.readLine()) != null) {
-			if (line.equals(""))
-				break;
-			String[] s = line.split(" ");
-			bufferedReader.close();
-			return Integer.parseInt(s[0]);
-			
-		}
-		bufferedReader.close();
-		return null;
+
+	public ReturnProperties readList(String filename) throws IOException {
+		ReturnProperties rp = readFromFile(filename);
+		return rp;
 	}
 
-	private HashMap<String, ArrayList<Node>> readFromFile(String filename)
+
+	private ReturnProperties readFromFile(String filename)
 			throws FileNotFoundException, IOException {
+		ReturnProperties rp = new ReturnProperties();
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		HashMap<String, ArrayList<Node>> adjacencyList = new HashMap<String, ArrayList<Node>>();
@@ -51,6 +45,7 @@ public class TextInputParser {
 				break;
 			String[] s = line.split(" ");
 			if (s.length != 3) {
+				rp.size = Integer.parseInt(s[0]);
 				continue;
 			}
 			if (!adjacencyList.containsKey(s[0])) {
@@ -59,11 +54,17 @@ public class TextInputParser {
 			if (!adjacencyList.containsKey(s[1])) {
 				adjacencyList.put(s[1], new ArrayList<Node>());
 			}
+			rp.parents.put(s[0], null);
+			rp.parents.put(s[1], null);
+			rp.distance.put(s[0], Integer.MAX_VALUE);
+			rp.distance.put(s[1], Integer.MAX_VALUE);
+
 			adjacencyList.get(s[0]).add(new Node(s[1], Integer.parseInt(s[2])));
 			adjacencyList.get(s[1]).add(new Node(s[0], Integer.parseInt(s[2])));
 		}
 		bufferedReader.close();
-		return adjacencyList;
+		rp.adjacencyList = adjacencyList;
+		return rp;
 	}
 
 
