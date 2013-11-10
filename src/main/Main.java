@@ -24,10 +24,10 @@ public class Main {
 			HashMap<String, String> parent = rp.parents;
 			MinHeap heap = new MinHeap(size);
 			adjacencyList = rp.adjacencyList;
-			rp.distance.put("A", 0);
+			d.put("A", 0);
 
 			for (String k : rp.keys) {
-				heap.insert(k, rp.distance.get(k));
+				heap.insert(k, d.get(k));
 			}
 			
 			for (int i = 0; i < size; i++) {
@@ -38,27 +38,27 @@ public class Main {
 					if (heap.keyIndex.get(key.vertex) == null) {
 						continue;
 					}
-					if (rp.distance.get(key.vertex) > rp.distance.get(currentKey) + key.weight) {
-						rp.distance.put(key.vertex, rp.distance.get(currentKey) + key.weight);  
-						rp.parents.put(key.vertex, currentKey);
+					if (d.get(key.vertex) > d.get(currentKey) + key.weight) {
+						d.put(key.vertex, d.get(currentKey) + key.weight);  
+						parent.put(key.vertex, currentKey);
 						Integer keyIndex = heap.keyIndex.get(key.vertex);
-						heap.updateValue(keyIndex, rp.distance.get(key.vertex));
+						heap.updateValue(keyIndex, d.get(key.vertex));
 						heap.swim(heap.minheap[keyIndex]);
 					}
 				}
 			}
 			
-			System.out.println(rp.distance.get("B"));
+			System.out.println(d.get("B"));
 			
 			 
-			String parentVertex = rp.parents.get("B");
+			String parentVertex = parent.get("B");
 			Stack<String> s1 = new Stack<String>();
 			if (parentVertex != null) {
 				s1.push("B");
 			}
 			while (parentVertex != null) {
 				s1.push(parentVertex);
-				parentVertex = rp.parents.get(parentVertex);
+				parentVertex = parent.get(parentVertex);
 			}
 			
 			while (!s1.isEmpty()) {
