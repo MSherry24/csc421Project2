@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class TextInputParser {
 	public class Node {
-		private String vertex;
-		private Integer weight;
+		public String vertex;
+		public Integer weight;
 
 		Node(String v, Integer w) {
 			this.vertex = v;
@@ -24,6 +24,7 @@ public class TextInputParser {
 		public Integer size;
 		public HashMap<String, String> parents;
 		public HashMap<String, Integer> distance;
+		public ArrayList<String> keys;
 	}
 
 
@@ -39,6 +40,9 @@ public class TextInputParser {
 		FileReader fileReader = new FileReader(filename);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		HashMap<String, ArrayList<Node>> adjacencyList = new HashMap<String, ArrayList<Node>>();
+		rp.keys = new ArrayList<String>();
+		rp.parents = new HashMap<String, String>();
+		rp.distance = new HashMap<String, Integer>();
 		String line = null;
 		while ((line = bufferedReader.readLine()) != null) {
 			if (line.equals(""))
@@ -50,14 +54,17 @@ public class TextInputParser {
 			}
 			if (!adjacencyList.containsKey(s[0])) {
 				adjacencyList.put(s[0], new ArrayList<Node>());
+				rp.keys.add(s[0]);
 			}
 			if (!adjacencyList.containsKey(s[1])) {
 				adjacencyList.put(s[1], new ArrayList<Node>());
+				rp.keys.add(s[1]);
 			}
 			rp.parents.put(s[0], null);
 			rp.parents.put(s[1], null);
 			rp.distance.put(s[0], Integer.MAX_VALUE);
 			rp.distance.put(s[1], Integer.MAX_VALUE);
+			
 
 			adjacencyList.get(s[0]).add(new Node(s[1], Integer.parseInt(s[2])));
 			adjacencyList.get(s[1]).add(new Node(s[0], Integer.parseInt(s[2])));
